@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface TaskService extends GenericService<Task> {
     public List<Task> getTasksByUserId(long id);
+    public Task getTaskByObjectTypeAndObjectId(String type, long id);
 }

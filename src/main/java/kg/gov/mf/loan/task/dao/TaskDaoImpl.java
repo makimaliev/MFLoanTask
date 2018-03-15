@@ -14,4 +14,10 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
     {
         return getCurrentSession().createQuery("from Task where assignedToUserId = '" + id + "'").list();
     }
+
+    @Override
+    public Task getTaskByObjectTypeAndObjectId(String type, long id)
+    {
+        return (Task)getCurrentSession().createQuery("from Task where objectType = '" + type + "' and objectId = '" + id + "'").uniqueResult();
+    }
 }

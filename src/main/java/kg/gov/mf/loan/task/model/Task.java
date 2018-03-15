@@ -71,6 +71,10 @@ public class Task extends GenericModel {
 
     private long modifiedByUserId;
 
+    private String objectType;
+
+    private long objectId;
+
     public String getSummary() {
         return summary;
     }
@@ -189,5 +193,21 @@ public class Task extends GenericModel {
 
     public void setModifiedByUserId(long modifiedByUserId) {
         this.modifiedByUserId = modifiedByUserId;
+    }
+
+    public String getObjectType() {
+        return objectType;
+    }
+
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
+    }
+
+    public long getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(long objectId) {
+        this.objectId = objectId;
     }
 }
