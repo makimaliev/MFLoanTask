@@ -17,13 +17,40 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
     TaskDao taskDao;
 
     @Override
-    public List<Task> getTasksByUserId(long id){
+    public List<Task> getTasksByUserId(long id)
+    {
         return this.taskDao.getTasksByUserId(id);
+    }
+
+    @Override
+    public Task getTasksById(long id)
+    {
+        return taskDao.getTasksById(id);
     }
 
     @Override
     public Task getTaskByObjectTypeAndObjectId(String type, long id)
     {
         return this.taskDao.getTaskByObjectTypeAndObjectId(type,id);
+    }
+
+    @Override
+    public Task getTaskByObjectType(String type) {
+        return this.taskDao.getTaskByObjectType(type);
+    }
+
+    @Override
+    public Task getTaskByObjectId(Long id) {
+        return this.taskDao.getTaskByObjectId(id);
+    }
+
+    @Override
+    public List<Task> getTasksByObjectType(String type) {
+        return taskDao.getTasksByObjectType(type);
+    }
+
+    @Override
+    public List<Task> getTasksByObjectId(Long id) {
+        return taskDao.getTasskByObjectId(id);
     }
 }

@@ -6,6 +6,14 @@ import kg.gov.mf.loan.task.model.Task;
 import java.util.List;
 
 public interface TaskService extends GenericService<Task> {
-    public List<Task> getTasksByUserId(long id);
-    public Task getTaskByObjectTypeAndObjectId(String type, long id);
+    List<Task> getTasksByUserId(long id);
+    Task getTasksById(long id);
+
+    Task getTaskByObjectTypeAndObjectId(String type, long id);
+
+    Task getTaskByObjectType(String type);
+    Task getTaskByObjectId(Long id);
+
+    List<Task> getTasksByObjectType(String type);
+    List<Task> getTasksByObjectId(Long id);
 }
