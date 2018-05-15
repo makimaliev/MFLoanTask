@@ -3,7 +3,6 @@ package kg.gov.mf.loan.task.model;
 import kg.gov.mf.loan.admin.sys.model.User;
 import kg.gov.mf.loan.manage.model.GenericModel;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -12,69 +11,53 @@ import java.util.Date;
 @Table(name="task")
 public class Task extends GenericModel {
 
-    //Short description of the issue.
     @NotNull
-    private String summary;
-
+    private String summary;             //Short description of the issue.
+    private String objectType;
     private String description;
+    private String resolutionSummary;
+    private String progress;            //A brief description of progress made for this issue.
+    private long identifiedByUserId;    //The person who encountered the issue.
+    private long modifiedByUserId;
+    private long objectId;
+    private long assignedToUserId;      //The person assigned to resolve this issue.
 
-    //The person who encountered the issue.
-    private long identifiedByUserId;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status = TaskStatus.OPEN;          //The issue status which can be open, closed or on-hold.
 
-    //The date the issue occurred.
+    @Enumerated(EnumType.STRING)
+    private TaskPriority priority = TaskPriority.MEDIUM;      //The issue priority which can be high, medium or low.
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     @Column(nullable=false)
-    private Date identifiedDate;
+    private Date identifiedDate = new Date();        //The date the issue occurred.
 
-    //The person assigned to resolve this issue.
-    private long assignedToUserId;
-
-    //The issue status which can be open, closed or on-hold.
-    @Enumerated(EnumType.STRING)
-    private TaskStatus status;
-
-    //The issue priority which can be high, medium or low.
-    @Enumerated(EnumType.STRING)
-    private TaskPriority priority;
-
-    //The date this issue should be closed.
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     @Column(nullable=false)
-    private Date targetResolutionDate;
+    private Date targetResolutionDate;  //The date this issue should be closed.
 
-    //A brief description of progress made for this issue.
-    private String progress;
-
-    //The date the issue was closed.
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     @Column(nullable=true)
-    private Date actualResolutionDate;
-
-    private String resolutionSummary;
+    private Date actualResolutionDate;  //The date the issue was closed.
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     @Column(nullable=false)
-    private Date createdOn;
+    private Date createdOn = new Date();
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.DATE)
+    @Column(nullable=false)
+    private Date modifiedOn = new Date();
 
     @ManyToOne(targetEntity=User.class, fetch = FetchType.EAGER)
     @JoinColumn(name="createdByUserId")
     private User createdBy;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Temporal(TemporalType.DATE)
-    @Column(nullable=false)
-    private Date modifiedOn;
-
-    private long modifiedByUserId;
-
-    private String objectType;
-
-    private long objectId;
-
+    //region GET-SET
     public String getSummary() {
         return summary;
     }
@@ -210,4 +193,5 @@ public class Task extends GenericModel {
     public void setObjectId(long objectId) {
         this.objectId = objectId;
     }
+    //endregion
 }

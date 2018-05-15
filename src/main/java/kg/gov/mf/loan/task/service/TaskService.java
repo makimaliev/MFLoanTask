@@ -1,5 +1,6 @@
 package kg.gov.mf.loan.task.service;
 
+import kg.gov.mf.loan.admin.sys.model.User;
 import kg.gov.mf.loan.manage.service.GenericService;
 import kg.gov.mf.loan.task.model.Task;
 
@@ -11,9 +12,14 @@ public interface TaskService extends GenericService<Task> {
 
     Task getTaskByObjectTypeAndObjectId(String type, long id);
 
-    Task getTaskByObjectType(String type);
-    Task getTaskByObjectId(Long id);
+    Task getTaskByObjectType(String objectType, Long userId);
+    List<Task> getTasksByObjectType(String objectType, Long userId);
 
-    List<Task> getTasksByObjectType(String type);
-    List<Task> getTasksByObjectId(Long id);
+    Task getTaskByObjectId(Long objectId, Long userId);
+    List<Task> getTasksByObjectId(Long objectId, Long userId);
+
+    void completeTask(Long objectId, User user);
+
+    List<Task> getOpenTasks(Long userId);
+    List<Task> getClosedTasks(Long userId);
 }
