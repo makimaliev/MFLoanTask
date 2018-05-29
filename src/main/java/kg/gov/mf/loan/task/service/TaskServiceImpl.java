@@ -36,34 +36,36 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
     }
 
     @Override
-    public Task getTaskByObjectType(String objectType, Long userId) {
-        return this.taskDao.getTaskByObjectType(objectType, userId);
+    public Task getTaskByObjectType(String objectType) {
+        return this.taskDao.getTaskByObjectType(objectType);
     }
 
     @Override
-    public Task getTaskByObjectId(Long objectId, Long userId) {
-        return this.taskDao.getTaskByObjectId(objectId, userId);
+    public List<Task> getTasksByObjectType(String objectType) {
+        return taskDao.getTasksByObjectType(objectType);
     }
 
     @Override
-    public List<Task> getTasksByObjectType(String objectType, Long userId) {
-        return taskDao.getTasksByObjectType(objectType, userId);
+    public Task getTaskByObjectId(Long objectId) {
+        return this.taskDao.getTaskByObjectId(objectId);
     }
 
     @Override
-    public List<Task> getTasksByObjectId(Long objectId, Long userId) {
-        return taskDao.getTasksByObjectId(objectId, userId);
+    public List<Task> getTasksByObjectId(Long objectId) {
+        return taskDao.getTasksByObjectId(objectId);
     }
 
     @Override
     public void completeTask(Long objectId, User user) {
-        for(Task task : taskDao.getTasksByObjectId(objectId, user.getId()))
+
+        for(Task task : taskDao.getTasksByObjectId(objectId))
         {
             if(task.getStatus() == TaskStatus.OPEN) {
                 task.setActualResolutionDate(new Date());
                 task.setStatus(TaskStatus.CLOSED);
                 task.setModifiedOn(new Date());
-                task.setModifiedByUserId(user.getId());
+                if(task.getAssignedToUserId() == user.getId())
+                    task.setModifiedByUserId(user.getId());
                 taskDao.update(task);
             }
         }

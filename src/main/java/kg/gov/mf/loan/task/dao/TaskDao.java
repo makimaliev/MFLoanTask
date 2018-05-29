@@ -10,10 +10,11 @@ public interface TaskDao extends GenericDao<Task>
     Task getTasksById(long id);
     Task getTaskByObjectTypeAndObjectId (String type, Long id);
 
-    Task getTaskByObjectType(String objectType, Long userId);
-    Task getTaskByObjectId(Long objectId, Long userId);
-    List<Task> getTasksByObjectType(String objectType, Long userId);
-    List<Task> getTasksByObjectId(Long objectId, Long userId);
+    Task getTaskByObjectType(String objectType);
+    List<Task> getTasksByObjectType(String objectType);
+
+    Task getTaskByObjectId(Long objectId);
+    List<Task> getTasksByObjectId(Long objectId);
 
     List<Task> getOpenTasks(Long userId);
     List<Task> getClosedTasks(Long userId);
