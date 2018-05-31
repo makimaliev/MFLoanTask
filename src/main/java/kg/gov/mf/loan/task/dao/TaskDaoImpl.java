@@ -27,10 +27,12 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
         return (Task)getCurrentSession().createQuery("from Task where objectType = '" + type + "' and objectId = '" + id + "'").uniqueResult();
     }
 
+
+
     @Override
     @Transactional(readOnly = true)
     public Task getTaskByObjectType(String objectType) {
-        String query = "from Task where objectType = :objectType and status = 'OPEN'";
+        String query = "from Task where objectType = :objectType";
         return (Task)getCurrentSession().createQuery(query)
                 .setParameter("objectType", objectType)
                 .uniqueResult();
@@ -38,8 +40,8 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List getTasksByObjectType(String objectType) {
-        String query = "from Task where objectType = :objectType and status = 'OPEN'";
+    public List<Task> getTasksByObjectType(String objectType) {
+        String query = "from Task where objectType = :objectType";
         return getCurrentSession().createQuery(query)
                 .setParameter("objectType", objectType)
                 .list();
@@ -48,7 +50,7 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
     @Override
     @Transactional(readOnly = true)
     public Task getTaskByObjectId(Long objectId) {
-        String query = "from Task where objectId = :objectId and status = 'OPEN'";
+        String query = "from Task where objectId = :objectId";
         return (Task)getCurrentSession().createQuery(query)
                 .setParameter("objectId", objectId)
                 .uniqueResult();
@@ -56,8 +58,8 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List getTasksByObjectId(Long objectId) {
-        String query = "from Task where objectId = :objectId and status = 'OPEN'";
+    public List<Task> getTasksByObjectId(Long objectId) {
+        String query = "from Task where objectId = :objectId";
         return getCurrentSession().createQuery(query)
                 .setParameter("objectId", objectId)
                 .list();
@@ -65,7 +67,7 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List getOpenTasks(Long userId) {
+    public List<Task> getOpenTasks(Long userId) {
         String query = "from Task where assignedToUserId = :assignedToUserId and status = 'OPEN'";
         return getCurrentSession().createQuery(query)
                 .setParameter("assignedToUserId", userId)
@@ -74,7 +76,7 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List getClosedTasks(Long userId) {
+    public List<Task> getClosedTasks(Long userId) {
         String query = "from Task where assignedToUserId = :assignedToUserId and status = 'CLOSED'";
         return getCurrentSession().createQuery(query)
                 .setParameter("assignedToUserId", userId)
