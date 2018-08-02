@@ -1,7 +1,7 @@
 package kg.gov.mf.loan.task.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import kg.gov.mf.loan.admin.sys.model.User;
-import kg.gov.mf.loan.manage.model.GenericModel;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,52 +12,82 @@ import java.util.Date;
 public class Task extends GenericModel {
 
     @NotNull
-    private String summary;             //Short description of the issue.
-    private String objectType;
-    private String description;
+    private String summary;                                 // Short description of the issue.
     private String resolutionSummary;
-    private String progress;            //A brief description of progress made for this issue.
-    private long identifiedByUserId;    //The person who encountered the issue.
-    private long modifiedByUserId;
+    private String description;
+
     private long objectId;
-    private long assignedToUserId;      //The person assigned to resolve this issue.
+    private String objectType;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private TaskAction action;
+
+    //******************************************************************************************************************
+
+    private String progress;                                //A brief description of progress made for this issue.
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus status = TaskStatus.OPEN;          //The issue status which can be open, closed or on-hold.
+    private TaskStatus status = TaskStatus.OPEN;            //The issue status which can be open, closed or on-hold.
 
     @Enumerated(EnumType.STRING)
-    private TaskPriority priority = TaskPriority.MEDIUM;      //The issue priority which can be high, medium or low.
+    private TaskPriority priority = TaskPriority.MEDIUM;    //The issue priority which can be high, medium or low.
+
+    //******************************************************************************************************************
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="createdByUserId")
+    private User createdBy;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="assignedTo")
+    private User assignedTo;
+
+    private long identifiedByUserId;                        //The person who encountered the issue.
+    private long modifiedByUserId;
+    private long assignedToUserId;                          //The person assigned to resolve this issue.
+
+    //******************************************************************************************************************
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    @Column(nullable=false)
-    private Date identifiedDate = new Date();        //The date the issue occurred.
+    private Date identifiedDate = new Date();               //The date the issue occurred.
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    @Column(nullable=false)
-    private Date targetResolutionDate;  //The date this issue should be closed.
+    private Date targetResolutionDate;                      //The date this issue should be closed.
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    @Column(nullable=true)
-    private Date actualResolutionDate;  //The date the issue was closed.
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
-    @Column(nullable=false)
     private Date createdOn = new Date();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.DATE)
-    @Column(nullable=false)
     private Date modifiedOn = new Date();
 
-    @ManyToOne(targetEntity=User.class, fetch = FetchType.EAGER)
-    @JoinColumn(name="createdByUserId")
-    private User createdBy;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private Date actualResolutionDate;                      //The date the issue was closed.
 
     //region GET-SET
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public TaskAction getAction() {
+        return action;
+    }
+
+    public void setAction(TaskAction action) {
+        this.action = action;
+    }
+
     public String getSummary() {
         return summary;
     }
