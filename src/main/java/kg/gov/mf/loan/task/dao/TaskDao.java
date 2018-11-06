@@ -1,8 +1,9 @@
 package kg.gov.mf.loan.task.dao;
 
 import kg.gov.mf.loan.admin.sys.model.User;
-import kg.gov.mf.loan.dao.GenericDao;
+import kg.gov.mf.loan.core.dao.GenericDao;
 import kg.gov.mf.loan.task.model.Task;
+
 import java.util.List;
 import java.util.Map;
 

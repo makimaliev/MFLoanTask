@@ -1,6 +1,6 @@
 package kg.gov.mf.loan.task.dao;
 
-import kg.gov.mf.loan.dao.GenericDaoImpl;
+import kg.gov.mf.loan.core.dao.GenericDaoImpl;
 import kg.gov.mf.loan.task.model.Chat;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,7 @@
 package kg.gov.mf.loan.task.service;
 
 import kg.gov.mf.loan.admin.sys.model.User;
-import kg.gov.mf.loan.service.GenericServiceImpl;
+import kg.gov.mf.loan.core.service.GenericServiceImpl;
 import kg.gov.mf.loan.task.dao.TaskDao;
 import kg.gov.mf.loan.task.model.*;
 import org.hibernate.HibernateException;
