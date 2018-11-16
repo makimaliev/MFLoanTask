@@ -15,7 +15,6 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
     @Override
     @Transactional(readOnly = true)
     public List<Task> getTasksByUserId(long id) {
-        //return getCurrentSession().createQuery("from Task where assignedToUserId = '" + id + "' and status = 'OPEN'").list();
         return entityManager.createQuery("select t from Task t where t.assignedToUserId = :id and t.status = 'OPEN'")
                 .setParameter("id", id)
                 .getResultList();
@@ -24,7 +23,6 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
     @Override
     @Transactional(readOnly = true)
     public Task getTasksById(long id) {
-        //return (Task)getCurrentSession().createQuery("from Task where Id = '" + id + "'").uniqueResult();
         return (Task)entityManager.createQuery("select t from Task t where t.assignedToUserId = :id and t.status = 'OPEN'")
                 .setParameter("id", id)
                 .getSingleResult();
@@ -33,7 +31,6 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
     @Override
     @Transactional(readOnly = true)
     public Task getTaskByObjectTypeAndObjectId(String type, Long id) {
-        //return (Task)getCurrentSession().createQuery("from Task where objectType = '" + type + "' and objectId = '" + id + "'").uniqueResult();
         return (Task)entityManager.createQuery("select t from Task t where t.objectType = :objectType and t.objectId = :id")
                 .setParameter("objectType", type)
                 .setParameter("id", id)
@@ -43,13 +40,6 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
     @Override
     @Transactional(readOnly = true)
     public Task getTaskByObjectType(String objectType) {
-        /*
-        String query = "from Task where objectType = :objectType";
-        return (Task)getCurrentSession().createQuery(query)
-                .setParameter("objectType", objectType)
-                .uniqueResult();
-        */
-
         return (Task)entityManager.createQuery("select t from Task t where t.objectType = :objectType")
                 .setParameter("objectType", objectType)
                 .getSingleResult();
@@ -58,12 +48,6 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
     @Override
     @Transactional(readOnly = true)
     public List<Task> getTasksByObjectType(String objectType) {
-        /*
-        String query = "from Task where objectType = :objectType";
-        return getCurrentSession().createQuery(query)
-                .setParameter("objectType", objectType)
-                .list();
-        */
         return entityManager.createQuery("select t from Task t where t.objectType = :objectType")
                 .setParameter("objectType", objectType)
                 .getResultList();
@@ -72,12 +56,6 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
     @Override
     @Transactional(readOnly = true)
     public Task getTaskByObjectId(Long objectId) {
-        /*
-        String query = "from Task where objectId = :objectId";
-        return (Task)getCurrentSession().createQuery(query)
-                .setParameter("objectId", objectId)
-                .uniqueResult();
-        */
         return (Task)entityManager.createQuery("select t from Task t where t.objectId = :objectId")
                 .setParameter("objectId", objectId)
                 .getSingleResult();
@@ -86,12 +64,6 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
     @Override
     @Transactional(readOnly = true)
     public List<Task> getTasksByObjectId(Long objectId) {
-        /*
-        String query = "from Task where objectId = :objectId";
-        return getCurrentSession().createQuery(query)
-                .setParameter("objectId", objectId)
-                .list();
-                */
         return entityManager.createQuery("select t from Task t where t.objectId = :objectId")
                 .setParameter("objectId", objectId)
                 .getResultList();

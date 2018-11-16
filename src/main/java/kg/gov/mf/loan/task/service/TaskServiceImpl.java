@@ -93,7 +93,7 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
             task.setActualResolutionDate(new Date());
             task.setStatus(TaskStatus.CLOSED);
             task.setResolutionSummary(result);
-            taskDao.edit(task);
+            taskDao.update(task);
         }
     }
 
