@@ -1,6 +1,5 @@
 package kg.gov.mf.loan.task.service;
 
-import kg.gov.mf.loan.core.service.GenericServiceImpl;
 import kg.gov.mf.loan.task.dao.ChatDao;
 import kg.gov.mf.loan.task.model.Chat;
 import org.springframework.beans.factory.annotation.Autowired;

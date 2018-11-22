@@ -1,7 +1,5 @@
 package kg.gov.mf.loan.task.model;
 
-import kg.gov.mf.loan.core.model.GenericModel;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;

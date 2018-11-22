@@ -1,7 +1,6 @@
 package kg.gov.mf.loan.task.service;
 
 import kg.gov.mf.loan.admin.sys.model.User;
-import kg.gov.mf.loan.core.service.GenericService;
 import kg.gov.mf.loan.task.model.ObjectType;
 import kg.gov.mf.loan.task.model.Task;
 import kg.gov.mf.loan.task.model.TaskObject;

@@ -1,6 +1,5 @@
 package kg.gov.mf.loan.task.dao;
 
-import kg.gov.mf.loan.core.dao.GenericDao;
 import kg.gov.mf.loan.task.model.Chat;
 
 import java.util.List;

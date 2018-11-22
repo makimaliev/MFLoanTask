@@ -2,7 +2,6 @@ package kg.gov.mf.loan.task.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kg.gov.mf.loan.admin.sys.model.User;
-import kg.gov.mf.loan.core.model.GenericModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
