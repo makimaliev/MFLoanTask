@@ -11,7 +11,7 @@ public class MFLog extends GenericModel
     private String createdBy;
     private Date createdDate = new Date();
     private String entity;
-    private Long entityId;
+    private long entityId;
     private String action;
     private String ip;
 
@@ -40,11 +40,11 @@ public class MFLog extends GenericModel
         this.entity = entity;
     }
 
-    public Long getEntityId() {
+    public long getEntityId() {
         return entityId;
     }
 
-    public void setEntityId(Long entityId) {
+    public void setEntityId(long entityId) {
         this.entityId = entityId;
     }
 

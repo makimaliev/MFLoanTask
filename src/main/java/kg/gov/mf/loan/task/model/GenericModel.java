@@ -1,7 +1,6 @@
 package kg.gov.mf.loan.task.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,13 +17,12 @@ public abstract class GenericModel implements Serializable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
 	@JsonIgnore
     private Long version = 1L;
 
     @JsonIgnore
-    @NaturalId
     private String uuid = UUID.randomUUID().toString();
 
     //region GET-SET
@@ -39,11 +37,11 @@ public abstract class GenericModel implements Serializable {
         this.uuid = uuid;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -68,7 +66,7 @@ public abstract class GenericModel implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version);
+        return Objects.hash(id, version, uuid);
     }
     //endregion
 }

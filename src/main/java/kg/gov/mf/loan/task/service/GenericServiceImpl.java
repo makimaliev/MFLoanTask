@@ -32,7 +32,7 @@ public abstract class GenericServiceImpl<E> implements GenericService<E>
 
     @Override
     @Transactional(readOnly = true)
-    public E getById(Long id) {
+    public E getById(long id) {
         return dao.getById(id);
     }
 

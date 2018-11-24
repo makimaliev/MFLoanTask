@@ -10,7 +10,7 @@ public interface GenericService<E>
     List<E> listByParam(String param);
     List<E> listByParam(String param, int firstResult, int maxResults);
     int count();
-    E getById(Long id);
+    E getById(long id);
     E update(E entity);
     void remove(E entity);
 }

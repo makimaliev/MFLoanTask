@@ -73,7 +73,7 @@ public abstract class GenericDaoImpl<E> implements GenericDao<E>
     }
 
     @Override
-    public E getById(Long id) {
+    public E getById(long id) {
         return entityManager.find(entityClass, id);
     }
 

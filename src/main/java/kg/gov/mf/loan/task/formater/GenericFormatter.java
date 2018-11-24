@@ -15,7 +15,7 @@ public class GenericFormatter<E> implements Formatter<E> {
 
     @Override
     public E parse(String text, Locale locale) throws ParseException {
-        Long id = Long.valueOf(text);
+        long id = Long.valueOf(text);
         return this.service.getById(id);
     }
 
