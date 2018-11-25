@@ -25,6 +25,8 @@ public abstract class GenericModel implements Serializable {
     @JsonIgnore
     private String uuid = UUID.randomUUID().toString();
 
+    private int status = 1;
+
     //region GET-SET
     public GenericModel() {
     }
@@ -51,6 +53,14 @@ public abstract class GenericModel implements Serializable {
 
     public Long getVersion() {
         return version;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override
