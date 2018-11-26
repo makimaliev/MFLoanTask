@@ -2,10 +2,7 @@ package kg.gov.mf.loan.task.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
@@ -25,7 +22,8 @@ public abstract class GenericModel implements Serializable {
     @JsonIgnore
     private String uuid = UUID.randomUUID().toString();
 
-    private int status = 1;
+    @Column(name = "record_status", columnDefinition = "int default 1")
+    private int record_status = 1;
 
     //region GET-SET
     public GenericModel() {
@@ -55,12 +53,12 @@ public abstract class GenericModel implements Serializable {
         return version;
     }
 
-    public int getStatus() {
-        return status;
+    public int getRecord_status() {
+        return record_status;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setRecord_status(int record_status) {
+        this.record_status = record_status;
     }
 
     @Override
