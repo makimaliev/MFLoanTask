@@ -126,20 +126,19 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
     }
 
     @Override
-    public List<Field> getFields(Class<?> type) {
+    public Map<String, Object> getFields(String className) {
 
-        List<Field> fields = new ArrayList<Field>();
+        Map<String, Object> fields = new HashMap<>();
 
-        for (Class<?> c = type; c != null; c = c.getSuperclass())
+        for(Field field : getAllFields(className))
         {
-            fields.addAll(Arrays.asList(c.getDeclaredFields()));
+            fields.put(field.getName(), field.getType().getSimpleName());
         }
 
         return fields;
     }
 
-    @Override
-    public Map<String, Object> getFields(String className) {
+    private List<Field> getAllFields(String className) {
 
         Class<?> type = null;
         try {
@@ -148,41 +147,21 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
             e.printStackTrace();
         }
 
-        Map<String, Object> fields = new HashMap<>();
+        List<Field> fields = new ArrayList<>();
 
-        for(Field field : type.getDeclaredFields())
+        fields.addAll(Arrays.asList(type.getDeclaredFields()));
+
+        if (type.getSuperclass() != null)
         {
-            fields.put(field.getName(), field.getType().getSimpleName());
+            fields.addAll(getAllFields(type.getSuperclass().getName()));
         }
 
         return fields;
     }
 
-    @Override
-    public ObjectType getEntity(String entity) {
-
-        Map<String, ClassMetadata>  entities = sessionFactory.getAllClassMetadata();
-
-        for(Map.Entry<String, ClassMetadata> item : entities.entrySet())
-        {
-            if(item.getValue().getMappedClass().getSimpleName().equals(entity))
-            {
-                ObjectType ot = new ObjectType();
-                ot.setObject(item.getValue().getMappedClass().getSimpleName());
-
-                /*
-                Map<String, Object> f = new HashMap<>();
-                for (Field field : getFields(item.getValue().getMappedClass())) {
-                    f.put(field.getName(), field.getType().getSimpleName());
-                }
-                ot.setFields(f);
-                */
-
-                return ot;
-            }
-        }
-
-        return new ObjectType();
+    private String getClassName(String obj)
+    {
+        return obj.split("\\.")[obj.split("\\.").length - 1];
     }
     //******************************************************************************************************************
 
@@ -197,21 +176,16 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
             session =  sessionFactory.openSession();
         }
 
-        return session.createQuery(query).list();
+        return session
+                .createQuery(query)
+                .list();
     }
 
     @Override
     public List queryBuilder(TaskObject taskObject) {
-        Session session;
 
-        try {
-            session =  sessionFactory.getCurrentSession();
-        } catch (HibernateException e) {
-            session =  sessionFactory.openSession();
-        }
-
-        String query = "from " + taskObject.getTable();
-        Query q = session.createQuery(query);
+        String query = "from " + getClassName(taskObject.getTable());
+        Query q = getSession().createQuery(query);
 
         List<ObjectData> vars = taskObject.getProperties();
 
@@ -219,23 +193,90 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
         {
             query += " where ";
             int current = 1;
+
             for (ObjectData item : vars)
             {
                 query += item.getProperty() + " " + item.getOperator() + " :" + item.getProperty();
+
                 if(current != vars.size())
                 {
                     query += " and ";
                 }
                 current++;
-            }
 
-            q = session.createQuery(query);
-            for(ObjectData item : vars)
-            {
-                q.setParameter(item.getProperty(), item.getValue());
+                Field f = null;
+
+                for(Field field : getAllFields(taskObject.getTable()))
+                {
+                    if (field.getName().equals(item.getProperty())) {
+                        f = field;
+                        break;
+                    }
+                }
+
+                q.setParameter(item.getProperty(), parse(f, item.getValue()));
             }
         }
 
         return q.list();
+    }
+
+    private Object parse(Field field, String value) {
+
+        if( Boolean.class == field.getType()) {
+            return Boolean.valueOf(value);
+        }
+        else if( Byte.class == field.getType()) {
+            return Byte.valueOf(value);
+        }
+        else if( Short.class == field.getType()) {
+            return Short.valueOf(value);
+        }
+        else if( Integer.class == field.getType()) {
+            return Integer.valueOf(value);
+        }
+        else if( Long.class == field.getType()) {
+            return Long.valueOf(value);
+        }
+        else if( Float.class == field.getType()) {
+            return Float.valueOf(value);
+        }
+        else if( Double.class == field.getType()) {
+            return Double.valueOf(value);
+        }
+        else if( Boolean.TYPE == field.getType()) {
+            return Boolean.parseBoolean(value);
+        }
+        else if( Byte.TYPE == field.getType()) {
+            return Byte.parseByte(value);
+        }
+        else if( Short.TYPE == field.getType()) {
+            return Short.parseShort(value);
+        }
+        else if( Integer.TYPE == field.getType()) {
+            return Integer.parseInt(value);
+        }
+        else if( Long.TYPE == field.getType()) {
+            return Long.parseLong(value);
+        }
+        else if( Float.TYPE == field.getType()) {
+            return Float.parseFloat(value);
+        }
+        else if( Double.TYPE == field.getType()) {
+            return Double.parseDouble(value);
+        } else {
+            return getSession().load(field.getType(), new Long(value));
+        }
+    }
+
+    private Session getSession() {
+
+        Session session;
+        try {
+            session =  sessionFactory.getCurrentSession();
+        } catch (HibernateException e) {
+            session =  sessionFactory.openSession();
+        }
+        return session;
     }
 }

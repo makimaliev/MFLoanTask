@@ -5,7 +5,6 @@ import kg.gov.mf.loan.task.model.ObjectType;
 import kg.gov.mf.loan.task.model.Task;
 import kg.gov.mf.loan.task.model.TaskObject;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -27,10 +26,7 @@ public interface TaskService extends GenericService<Task> {
 
     void completeTask(Long objectId, User user, String result);
 
-    ObjectType getEntity(String entity);
     List<ObjectType> getEntities();
-
-    List<Field> getFields(Class<?> type);
     Map<String, Object> getFields(String className);
 
     List getData(String query);
