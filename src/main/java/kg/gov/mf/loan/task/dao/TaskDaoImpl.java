@@ -82,7 +82,9 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
 
         return (Task)entityManager.createQuery(query)
                 .setParameter("user", user)
-                .getSingleResult();
+                .getResultList()
+                .get(0);
+                //.getSingleResult();
     }
 
     @Override
