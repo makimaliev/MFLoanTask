@@ -88,7 +88,8 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
         vars.put("objectId", objectId.toString());
 
         Task task = taskDao.getTask(user, vars);
-        if(task != null) {
+        if(task != null)
+        {
             task.setActualResolutionDate(new Date());
             task.setStatus(TaskStatus.CLOSED);
             task.setResolutionSummary(result);

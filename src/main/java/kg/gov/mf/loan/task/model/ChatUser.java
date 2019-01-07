@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Entity
 @Immutable
 @Table(name="chat_users")
-public class ChatUser implements Serializable {
+public class ChatUser implements Serializable, Comparable<ChatUser> {
 
     private static final long serialVersionUID = -3307436748176180347L;
 
@@ -41,5 +41,14 @@ public class ChatUser implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int compareTo(ChatUser chatUser)
+    {
+        if (getName() == null || chatUser.getName() == null) {
+            return 0;
+        }
+        return getName().compareTo(chatUser.getName());
     }
 }

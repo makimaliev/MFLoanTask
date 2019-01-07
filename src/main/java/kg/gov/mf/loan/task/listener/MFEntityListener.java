@@ -53,7 +53,7 @@ public class MFEntityListener {
 
         if(auth.isAuthenticated())
         {
-            user = ((UserDetails) auth.getPrincipal()).getUsername();
+            user = ((UserDetails)auth.getPrincipal()).getUsername();
             ip = ((WebAuthenticationDetails)auth.getDetails()).getRemoteAddress();
         }
 
