@@ -9,12 +9,20 @@ import java.util.Set;
 @Table(name="system_constant")
 public class SystemConstant extends GenericModel {
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "outgoingRegistrator")
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "sc_outgoingRegistrator",
+            joinColumns = { @JoinColumn(name = "outgoingRegistrator") },
+            inverseJoinColumns = { @JoinColumn(name = "id") }
+    )
     private Set<User> outgoingRegistrator = new HashSet<>(0);
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "scannerUser")
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "sc_scannerUser",
+            joinColumns = { @JoinColumn(name = "scannerUser") },
+            inverseJoinColumns = { @JoinColumn(name = "id") }
+    )
     private Set<User> scannerUser = new HashSet<>(0);
 
     //region GET-SET
