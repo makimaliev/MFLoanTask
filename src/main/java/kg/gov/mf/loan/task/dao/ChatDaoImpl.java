@@ -15,10 +15,12 @@ public class ChatDaoImpl extends GenericDaoImpl<Chat> implements ChatDao
     @Override
     public List getMessages(String sender, String receiver) {
 
-        List messages = entityManager.createQuery("select c from Chat c where ((c.sender = :sender OR c.sender = :receiver) AND (c.receiver = :receiver OR c.receiver = :sender)) order by c.id desc")
+        List messages = entityManager.createQuery(
+                "select c from Chat c " +
+                        "where ((c.sender = :sender OR c.sender = :receiver) AND (c.receiver = :receiver OR c.receiver = :sender)) AND Date(c.date) = CURDATE() " +
+                        "order by c.id desc")
                 .setParameter("sender", sender)
                 .setParameter("receiver", receiver)
-                .setMaxResults(10)
                 .getResultList();
 
         Collections.sort(messages, new Comparator<Chat>(){
