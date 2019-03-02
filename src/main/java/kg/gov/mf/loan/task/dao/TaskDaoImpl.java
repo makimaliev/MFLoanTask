@@ -14,7 +14,7 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
     @Override
     @Transactional(readOnly = true)
     public List<Task> getTasksByUserId(long id) {
-        return entityManager.createQuery("select t from Task t where t.assignedToUserId = :id or t.assignedTo = :id and t.status = 'OPEN'")
+        return entityManager.createQuery("select t from Task t where t.assignedToUserId = :id or t.assignedTo.id = :id and t.status = 'OPEN'")
                 .setParameter("id", id)
                 .getResultList();
     }
@@ -94,16 +94,10 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
 
         if(!vars.isEmpty())
         {
-            query += " where ";
-            int current = 1;
+            query += " where 1=1";
             for (Map.Entry<String, String> item : vars.entrySet())
             {
-                query += "t." + item.getKey() + " = '" + item.getValue() + "'";
-                if(current != vars.size())
-                {
-                    query += " and ";
-                }
-                current++;
+                query += " and t." + item.getKey() + " = '" + item.getValue() + "'";
             }
         }
 
