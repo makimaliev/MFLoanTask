@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @MappedSuperclass
-public abstract class GenericModel implements Serializable {
+public abstract class GenericModel extends Auditable<String> implements Serializable {
 
 	private static final long serialVersionUID = -3307436748176180347L;
 
