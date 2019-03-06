@@ -93,6 +93,7 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
             task.setActualResolutionDate(new Date());
             task.setStatus(TaskStatus.CLOSED);
             task.setResolutionSummary(result);
+            task.setModifiedByUserId(user.getId());
             taskDao.update(task);
         }
     }
@@ -185,37 +186,67 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
     @Override
     public List queryBuilder(TaskObject taskObject) {
 
-        String query = "from " + getClassName(taskObject.getTable());
+        String query = "from " + getClassName(taskObject.getTable()) + " e";
         Query q = getSession().createQuery(query);
 
         List<ObjectData> vars = taskObject.getProperties();
 
         if(!vars.isEmpty())
         {
-            query += " where ";
-            int current = 1;
+            query += " where 1=1";
 
             for (ObjectData item : vars)
             {
-                query += item.getProperty() + " " + item.getOperator() + " :" + item.getProperty();
+                String prop = item.getProperty();
+                String operator = item.getOperator();
 
-                if(current != vars.size())
-                {
-                    query += " and ";
+                /*
+                "="
+                "<>"
+                ">"
+                "<"
+                ">="
+                "<="
+                "LIKE"
+                "NOT"
+                "ALL"
+                "SOME"
+                "ANY"
+                "EXISTS"
+                "AND"
+                "OR"
+                "IN"
+                "BETWEEN"
+                */
+
+                switch(operator) {
+                    case "="        : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case "<>"       : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case ">"        : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case "<"        : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case ">="       : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case "<="       : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case "LIKE"     : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case "NOT"      : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case "EXISTS"   : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case "AND"      : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case "OR"       : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case "IN"       : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    case "BETWEEN"  : query += " and e." + prop + " " + operator + " :" + prop; break;
+                    default: break;
                 }
-                current++;
 
                 Field f = null;
 
                 for(Field field : getAllFields(taskObject.getTable()))
                 {
-                    if (field.getName().equals(item.getProperty())) {
+                    if (field.getName().equals(prop)) {
                         f = field;
                         break;
                     }
                 }
 
-                q.setParameter(item.getProperty(), parse(f, item.getValue()));
+                q.setParameter(prop, parse(f, item.getValue()));
             }
         }
 
