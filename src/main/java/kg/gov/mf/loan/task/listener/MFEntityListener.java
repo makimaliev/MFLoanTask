@@ -61,7 +61,11 @@ public class MFEntityListener {
         log.setCreatedBy(user);
         log.setIp(ip);
         log.setEntity(o.getClass().getSimpleName());
-        log.setEntityId(((GenericModel)o).getId());
+        if(o instanceof GenericModel)
+        {
+            log.setEntityId(((GenericModel) o).getId());
+        }
+
         log.setAction(logAction.value());
         loggerService.add(log);
     }
