@@ -12,15 +12,15 @@ import java.util.List;
 @Transactional
 public class ChatServiceImpl extends GenericServiceImpl<Chat> implements ChatService
 {
-    ChatDao dao;
+    ChatDao chatDao;
 
     @Autowired
-    public ChatServiceImpl(ChatDao dao) {
-        this.dao = dao;
+    public ChatServiceImpl(ChatDao chatDao) {
+        this.chatDao = chatDao;
     }
 
     @Override
     public List<Chat> getMessages(String sender, String receiver) {
-        return dao.getMessages(sender, receiver);
+        return chatDao.getMessages(sender, receiver);
     }
 }

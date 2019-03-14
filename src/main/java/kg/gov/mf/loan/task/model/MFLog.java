@@ -1,13 +1,29 @@
 package kg.gov.mf.loan.task.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name="mflog")
-public class MFLog extends GenericModel
+public class MFLog implements Serializable
 {
+    private static final long serialVersionUID = -3307436748176180347L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @JsonIgnore
+    private Long version = 1L;
+
+    @JsonIgnore
+    private String uuid = UUID.randomUUID().toString();
+
     private String createdBy;
     private Date createdDate = new Date();
     private String entity;
@@ -16,6 +32,31 @@ public class MFLog extends GenericModel
     private String ip;
 
     //region GET-SET
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public String getCreatedBy() {
         return createdBy;
     }
@@ -63,5 +104,6 @@ public class MFLog extends GenericModel
     public void setIp(String ip) {
         this.ip = ip;
     }
+
     //endregion
 }

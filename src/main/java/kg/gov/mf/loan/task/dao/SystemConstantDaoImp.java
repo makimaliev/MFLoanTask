@@ -6,5 +6,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public class SystemConstantDaoImpl extends GenericDaoImpl<SystemConstant> implements SystemConstantDao {
+public class SystemConstantDaoImp extends GenericDaoImpl<SystemConstant> implements SystemConstantDao {
 }

@@ -8,6 +8,7 @@ import javax.persistence.Table;
 public class TaskAction extends GenericModel {
 
     private String name;
+    private String description;
     private String url;
 
     //region GET-SET
@@ -26,5 +27,13 @@ public class TaskAction extends GenericModel {
     public void setUrl(String url) {
         this.url = url;
     }
-    //endregion
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+//endregion
 }

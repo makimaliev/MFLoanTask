@@ -1,5 +1,6 @@
 package kg.gov.mf.loan.task.model;
 
+import kg.gov.mf.loan.task.listener.MFEntityListener;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.util.Date;
 @Getter(AccessLevel.PROTECTED)
 @Setter(AccessLevel.PROTECTED)
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, MFEntityListener.class})
 public class Auditable<U> {
 
     @CreatedBy

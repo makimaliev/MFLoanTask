@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,11 +83,17 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
     }
 
     @Override
+    public List<Task> getDocumentTasks(Long userId) {
+        return taskDao.getDocumentTasks(userId);
+    }
+
+    @Override
     public void completeTask(Long objectId, User user, String result) {
 
         Map<String, String> vars = new HashMap<>();
         vars.put("status", "OPEN");
         vars.put("objectId", objectId.toString());
+        vars.put("objectType", "Document");
 
         Task task = taskDao.getTask(user, vars);
         if(task != null)
@@ -310,5 +318,10 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
             session =  sessionFactory.openSession();
         }
         return session;
+    }
+
+    @Override
+    public DataTablesOutput<Task> list(long userId, DataTablesInput input) {
+        return taskDao.list(userId, input);
     }
 }

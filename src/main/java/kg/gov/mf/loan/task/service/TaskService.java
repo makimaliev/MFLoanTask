@@ -4,6 +4,8 @@ import kg.gov.mf.loan.admin.sys.model.User;
 import kg.gov.mf.loan.task.model.ObjectType;
 import kg.gov.mf.loan.task.model.Task;
 import kg.gov.mf.loan.task.model.TaskObject;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ public interface TaskService extends GenericService<Task> {
 
     Task getTask(User user, Map<String, String> vars);
     List<Task> getTasks(Map<String, String> vars);
+    List<Task> getDocumentTasks(Long userId);
 
     void completeTask(Long objectId, User user, String result);
 
@@ -31,4 +34,6 @@ public interface TaskService extends GenericService<Task> {
 
     List getData(String query);
     List queryBuilder(TaskObject taskObject);
+
+    DataTablesOutput<Task> list(long userId, DataTablesInput input);
 }

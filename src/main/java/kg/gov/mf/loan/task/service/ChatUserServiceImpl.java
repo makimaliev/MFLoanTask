@@ -12,30 +12,30 @@ import java.util.List;
 @Transactional
 public class ChatUserServiceImpl extends GenericServiceImpl<ChatUser> implements ChatUserService
 {
-    private ChatUserDao dao;
+    private ChatUserDao chatUserDao;
 
     @Autowired
-    public ChatUserServiceImpl(ChatUserDao dao) {
-        this.dao = dao;
+    public ChatUserServiceImpl(ChatUserDao chatUserDao) {
+        this.chatUserDao = chatUserDao;
     }
 
     @Override
     public ChatUser getByName(String name) {
-        return dao.getByName(name);
+        return chatUserDao.getByName(name);
     }
 
     @Override
     public ChatUser getByUserName(String username) {
-        return dao.getByUserName(username);
+        return chatUserDao.getByUserName(username);
     }
 
     @Override
     public List<ChatUser> getAllByName(String name) {
-        return dao.getAllByName(name);
+        return chatUserDao.getAllByName(name);
     }
 
     @Override
     public List<ChatUser> getAllByUserName(String username) {
-        return dao.getAllByUserName(username);
+        return chatUserDao.getAllByUserName(username);
     }
 }

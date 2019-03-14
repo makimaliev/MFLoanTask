@@ -2,6 +2,8 @@ package kg.gov.mf.loan.task.dao;
 
 import kg.gov.mf.loan.admin.sys.model.User;
 import kg.gov.mf.loan.task.model.Task;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 
 import java.util.List;
 import java.util.Map;
@@ -20,5 +22,8 @@ public interface TaskDao extends GenericDao<Task>
 
     Task getTask(User user, Map<String, String> vars);
     List getTasks(Map<String, String> vars);
+    List<Task> getDocumentTasks(Long userId);
+
+    DataTablesOutput<Task> list(long userId, DataTablesInput input);
 }
 

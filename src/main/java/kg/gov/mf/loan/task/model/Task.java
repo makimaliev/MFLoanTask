@@ -1,6 +1,7 @@
 package kg.gov.mf.loan.task.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import kg.gov.mf.loan.admin.sys.model.User;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,8 +21,8 @@ public class Task extends GenericModel {
     private long objectId;
     private String objectType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="action_id")
     private TaskAction action;
 
     //******************************************************************************************************************
@@ -41,10 +42,18 @@ public class Task extends GenericModel {
     @JoinColumn(name="createdByUserId")
     private User createdBy;
 
+    @JsonSerialize
+    @Transient
+    private String createdByUser;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="assignedTo")
     private User assignedTo;
+
+    @JsonSerialize
+    @Transient
+    private String assignedToUser;
 
     private long identifiedByUserId;                        //The person who encountered the issue.
     private long modifiedByUserId;
@@ -52,27 +61,35 @@ public class Task extends GenericModel {
 
     //******************************************************************************************************************
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
     @Temporal(TemporalType.DATE)
     private Date identifiedDate = new Date();               //The date the issue occurred.
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
     @Temporal(TemporalType.DATE)
     private Date targetResolutionDate;                      //The date this issue should be closed.
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
     @Temporal(TemporalType.DATE)
     private Date createdOn = new Date();
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
     @Temporal(TemporalType.DATE)
     private Date modifiedOn = new Date();
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
     @Temporal(TemporalType.DATE)
     private Date actualResolutionDate;                      //The date the issue was closed.
 
     //region GET-SET
+    public String getCreatedByUser() {
+        return this.createdBy != null ? this.createdBy.getStaff().getName() : "Система";
+    }
+
+    public String getAssignedToUser() {
+        return this.assignedTo != null ? this.assignedTo.getStaff().getName() : "Система";
+    }
+
     public User getAssignedTo() {
         return assignedTo;
     }
