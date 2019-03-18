@@ -2,11 +2,20 @@ package kg.gov.mf.loan.task.model;
 
 public class ObjectData {
 
+    private String condition;
     private String property;
     private String operator;
     private String value;
 
     //region GET-SET
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
     public String getProperty() {
         return property;
     }

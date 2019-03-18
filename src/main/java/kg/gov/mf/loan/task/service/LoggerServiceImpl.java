@@ -10,14 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LoggerServiceImpl extends GenericServiceImpl<MFLog> implements LoggerService {
 
-    LoggerDao dao;
-
-    @Autowired
-    public LoggerServiceImpl(LoggerDao dao)
-    {
-        this.dao = dao;
-    }
-
     @Override
     public void addLog(String user, String entity, String action, String ip)
     {
@@ -28,4 +20,5 @@ public class LoggerServiceImpl extends GenericServiceImpl<MFLog> implements Logg
         log.setIp(ip);
         dao.add(log);
     }
+
 }
