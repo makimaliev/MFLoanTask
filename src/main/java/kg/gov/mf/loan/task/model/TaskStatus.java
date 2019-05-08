@@ -30,6 +30,12 @@ public enum TaskStatus {
         public String text() {
             return "Ошибка";
         }
+    },
+    RUNNING {
+        @Override
+        public String text() {
+            return "Выполняется";
+        }
     };
 
     public abstract String text();

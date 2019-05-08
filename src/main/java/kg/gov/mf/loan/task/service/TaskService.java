@@ -24,8 +24,8 @@ public interface TaskService extends GenericService<Task> {
     List<Task> getTasksByObjectId(Long objectId);
 
     Task getTask(User user, Map<String, String> vars);
-    List<Task> getTasks(Map<String, String> vars);
-    List<Task> getDocumentTasks(Long userId);
+    List<Task> getTasks(Map<String, Object> vars);
+    List getDocumentTasks(Long userId);
 
     void completeTask(Long objectId, User user, String result);
 
@@ -35,5 +35,5 @@ public interface TaskService extends GenericService<Task> {
     List getData(String query);
     List queryBuilder(TaskObject taskObject);
 
-    DataTablesOutput<Task> list(long userId, DataTablesInput input);
+    DataTablesOutput<Task> list(long formUserId, long toUserId, DataTablesInput input);
 }

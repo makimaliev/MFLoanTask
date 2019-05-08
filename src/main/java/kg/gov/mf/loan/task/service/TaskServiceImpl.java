@@ -14,6 +14,9 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -23,6 +26,9 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
 
     private TaskDao taskDao;
     private SessionFactory sessionFactory;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     public TaskServiceImpl(TaskDao taskDao, SessionFactory sessionFactory) {
@@ -78,12 +84,12 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
 
 
     @Override
-    public List<Task> getTasks(Map<String, String> vars) {
+    public List<Task> getTasks(Map<String, Object> vars) {
         return taskDao.getTasks(vars);
     }
 
     @Override
-    public List<Task> getDocumentTasks(Long userId) {
+    public List getDocumentTasks(Long userId) {
         return taskDao.getDocumentTasks(userId);
     }
 
@@ -194,56 +200,56 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
     @Override
     public List queryBuilder(TaskObject taskObject) {
 
-        String query = "from " + getClassName(taskObject.getTable()) + " e";
-        Query q = getSession().createQuery(query);
+        Class<?> clazz;
+
+        try {
+            clazz = Class.forName(taskObject.getTable());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String query = "select e from " + getClassName(taskObject.getTable()) + " e";
 
         List<ObjectData> vars = taskObject.getProperties();
 
         if(!vars.isEmpty())
         {
-            query += " where 1=1";
+            query += " where 1=1 ";
 
             for (ObjectData item : vars)
             {
                 String prop = item.getProperty();
                 String operator = item.getOperator();
+                String condition = item.getCondition();
 
-                /*
-                "="
-                "<>"
-                ">"
-                "<"
-                ">="
-                "<="
-                "LIKE"
-                "NOT"
-                "ALL"
-                "SOME"
-                "ANY"
-                "EXISTS"
-                "AND"
-                "OR"
-                "IN"
-                "BETWEEN"
-                */
+                query += " " + condition;
 
-                switch(operator) {
-                    case "="        : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case "<>"       : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case ">"        : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case "<"        : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case ">="       : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case "<="       : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case "LIKE"     : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case "NOT"      : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case "EXISTS"   : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case "AND"      : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case "OR"       : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case "IN"       : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    case "BETWEEN"  : query += " and e." + prop + " " + operator + " :" + prop; break;
-                    default: break;
+                if(operator.equals("LIKE") || operator.equals("LIKE"))
+                {
+                    query += " e." + prop + " " + operator + " CONCAT('%', :" + prop + ", '%')";
                 }
+                else if(operator.equals("IN"))
+                {
+                    query += " e." + prop + " IN (:" + prop + ")";
+                }
+                else if(operator.equals("BETWEEN"))
+                {
+                    query += " e." + prop + " BETWEEN (:" + prop + " and :" + prop + ")";
+                }
+                else // =, <>, <, >, >=, <=
+                {
+                    query += " e." + prop + " " + operator + " :" + prop;
+                }
+            }
+        }
 
+        Query q = getSession().createQuery(query);
+
+        if(!vars.isEmpty())
+        {
+            for (ObjectData item : vars)
+            {
+                String prop = item.getProperty();
                 Field f = null;
 
                 for(Field field : getAllFields(taskObject.getTable()))
@@ -253,7 +259,6 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
                         break;
                     }
                 }
-
                 q.setParameter(prop, parse(f, item.getValue()));
             }
         }
@@ -283,6 +288,9 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
         }
         else if( Double.class == field.getType()) {
             return Double.valueOf(value);
+        }
+        else if( String.class == field.getType()) {
+            return String.valueOf(value);
         }
         else if( Boolean.TYPE == field.getType()) {
             return Boolean.parseBoolean(value);
@@ -321,7 +329,7 @@ public class TaskServiceImpl extends GenericServiceImpl<Task> implements TaskSer
     }
 
     @Override
-    public DataTablesOutput<Task> list(long userId, DataTablesInput input) {
-        return taskDao.list(userId, input);
+    public DataTablesOutput<Task> list(long formUserId, long toUserId, DataTablesInput input) {
+        return taskDao.list(formUserId, toUserId, input);
     }
 }

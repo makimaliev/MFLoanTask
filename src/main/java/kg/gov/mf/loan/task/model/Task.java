@@ -62,23 +62,23 @@ public class Task extends GenericModel {
     //******************************************************************************************************************
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date identifiedDate = new Date();               //The date the issue occurred.
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date targetResolutionDate;                      //The date this issue should be closed.
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdOn = new Date();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedOn = new Date();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date actualResolutionDate;                      //The date the issue was closed.
 
     //region GET-SET

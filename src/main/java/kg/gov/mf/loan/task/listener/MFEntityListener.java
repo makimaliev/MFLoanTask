@@ -12,9 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.PostPersist;
-import javax.persistence.PostRemove;
-import javax.persistence.PostUpdate;
+import javax.persistence.*;
+import java.util.Date;
 
 public class MFEntityListener {
 
@@ -27,7 +26,7 @@ public class MFEntityListener {
     public MFEntityListener() {}
 
     @PostPersist
-    public void entityPrePersist(Object o) {
+    public void entityPostPersist(Object o) {
         perform(o, LogAction.INSERTED);
     }
 
@@ -47,15 +46,8 @@ public class MFEntityListener {
         AutowireHelper.autowire(this, this.loggerService);
         AutowireHelper.autowire(this, this.authenticationFacade);
 
-        Authentication auth = authenticationFacade.getAuthentication();
-        String user = "System";
-        String ip = "localhost";
-
-        if(auth.isAuthenticated())
-        {
-            user = ((UserDetails)auth.getPrincipal()).getUsername();
-            ip = ((WebAuthenticationDetails)auth.getDetails()).getRemoteAddress();
-        }
+        String user = authenticationFacade.getUser();
+        String ip = authenticationFacade.getIP();
 
         MFLog log = new MFLog();
         log.setCreatedBy(user);

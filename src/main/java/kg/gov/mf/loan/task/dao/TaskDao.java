@@ -21,9 +21,9 @@ public interface TaskDao extends GenericDao<Task>
     List<Task> getTasksByObjectId(Long objectId);
 
     Task getTask(User user, Map<String, String> vars);
-    List getTasks(Map<String, String> vars);
-    List<Task> getDocumentTasks(Long userId);
+    List getTasks(Map<String, Object> vars);
+    List getDocumentTasks(Long userId);
 
-    DataTablesOutput<Task> list(long userId, DataTablesInput input);
+    DataTablesOutput<Task> list(long formUserId, long toUserId, DataTablesInput input);
 }
 

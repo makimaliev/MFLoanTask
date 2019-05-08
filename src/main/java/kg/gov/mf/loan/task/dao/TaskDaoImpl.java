@@ -96,41 +96,55 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Task> getTasks(Map<String, String> vars) {
+    public List<Task> getTasks(Map<String, Object> vars) {
 
-        String query = "select t from Task t ";
+        String q = "select t from Task t where 1=1";
 
         if(!vars.isEmpty())
         {
-            query += " where 1=1";
-            for (Map.Entry<String, String> item : vars.entrySet())
+            q += "";
+            for (Map.Entry<String, Object> item : vars.entrySet())
             {
-                query += " and t." + item.getKey() + " = '" + item.getValue() + "'";
+                q += " and t." + item.getKey() + " = :" + item.getKey() + "";
             }
         }
 
-        return entityManager.createQuery(query)
-                .getResultList();
+        Query query = entityManager.createQuery(q);
+
+        if(!vars.isEmpty())
+        {
+            for (Map.Entry<String, Object> item : vars.entrySet())
+            {
+                query.setParameter(item.getKey(), item.getValue());
+            }
+        }
+
+        return query.getResultList();
     }
 
     @Override
-    public List<Task> getDocumentTasks(Long userId) {
+    public List getDocumentTasks(Long userId) {
         return entityManager.createQuery("select t from Task t where (t.assignedToUserId = :userId or t.assignedTo.id = :userId) and t.status = 'OPEN' and t.objectType = 'Document'", Task.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }
 
     @Override
-    public DataTablesOutput<Task> list(long userId, DataTablesInput input) {
+    public DataTablesOutput<Task> list(long formUserId, long toUserId, DataTablesInput input) {
 
         String selectQuery = "SELECT t FROM Task t WHERE 1=1";
         String countQuery = "SELECT count(t) FROM Task t WHERE 1=1";
 
         String q = "";
 
-        if(userId !=  0)
+        if(formUserId !=  0)
         {
-            q += " and t.assignedTo.id = " + userId;
+            q += " and t.createdBy.id = " + formUserId;
+        }
+
+        if(toUserId !=  0)
+        {
+            q += " and t.assignedTo.id = " + toUserId;
         }
 
         for(Column column : input.getColumns())
@@ -205,8 +219,7 @@ public class TaskDaoImpl extends GenericDaoImpl<Task> implements TaskDao {
         return dataTablesOutput;
     }
 
-    private Date[] getDates(String dates)
-    {
+    private Date[] getDates(String dates) {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
 
         String[] allDate = dates.split("-");
