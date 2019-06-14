@@ -69,12 +69,12 @@ public abstract class GenericModel extends Auditable<String> implements Serializ
             return false;
         }
         GenericModel genericModel = (GenericModel) other;
-        return uuid.equals(genericModel.uuid);
+        return id==(genericModel.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, uuid);
+        return Objects.hash(id);
     }
     //endregion
 }
