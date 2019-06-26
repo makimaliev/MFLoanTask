@@ -1,7 +1,5 @@
 package kg.gov.mf.loan.task.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,10 +14,8 @@ public abstract class GenericModel extends Auditable<String> implements Serializ
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-	@JsonIgnore
     private Long version = 1L;
 
-    @JsonIgnore
     private String uuid = UUID.randomUUID().toString();
 
     @Column(name = "record_status", columnDefinition = "int default 1")
