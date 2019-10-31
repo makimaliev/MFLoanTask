@@ -24,6 +24,8 @@ public class Chat// extends GenericModel
     private String sender;
     private String receiver;
     private Long docId;
+    @Column(columnDefinition = "int default 0")
+    private int readed;
 
     @Transient
     private MessageType type;
@@ -87,6 +89,14 @@ public class Chat// extends GenericModel
 
     public void setType(MessageType type) {
         this.type = type;
+    }
+
+    public int getReaded() {
+        return readed;
+    }
+
+    public void setReaded(int readed) {
+        this.readed = readed;
     }
 
     public String getContent() {

@@ -7,4 +7,5 @@ import java.util.List;
 public interface ChatService/* extends GenericService<Chat>*/
 {
     List<Chat> getMessages(String sender, String receiver);
+    List<Chat> getNotRead(int readed,String receiver);
 }

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
+@Service("chatService")
 @Transactional
 public class ChatServiceImpl /*extends GenericServiceImpl<Chat>*/ implements ChatService
 {
@@ -19,5 +19,10 @@ public class ChatServiceImpl /*extends GenericServiceImpl<Chat>*/ implements Cha
     @Override
     public List<Chat> getMessages(String sender, String receiver) {
         return chatRepository.findAllByReceiverAndSenderOrSenderAndReceiver(receiver,sender,receiver,sender);
+    }
+
+    @Override
+    public List<Chat> getNotRead(int readed,String receiver) {
+        return chatRepository.findAllByReadedAndReceiver(readed,receiver);
     }
 }
