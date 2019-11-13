@@ -38,4 +38,9 @@ public class ChatUserServiceImpl extends GenericServiceImpl<ChatUser> implements
     public List<ChatUser> getAllByUserName(String username) {
         return chatUserDao.getAllByUserName(username);
     }
+
+    @Override
+    public List<ChatUser> listAllByDesc() {
+        return chatUserDao.listAllByDesc();
+    }
 }

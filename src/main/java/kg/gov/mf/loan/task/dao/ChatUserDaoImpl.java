@@ -36,4 +36,10 @@ public class ChatUserDaoImpl extends GenericDaoImpl<ChatUser> implements ChatUse
                 .setParameter("username", "%" + username + "%")
                 .getResultList();
     }
+
+    @Override
+    public List<ChatUser> listAllByDesc() {
+        return entityManager.createQuery("select cu from ChatUser cu order by cu.name desc")
+                .getResultList();
+    }
 }

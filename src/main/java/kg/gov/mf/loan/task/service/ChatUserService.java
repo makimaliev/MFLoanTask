@@ -11,4 +11,5 @@ public interface ChatUserService extends GenericService<ChatUser>
 
     List<ChatUser> getAllByName(String name);
     List<ChatUser> getAllByUserName(String username);
+    List<ChatUser> listAllByDesc();
 }

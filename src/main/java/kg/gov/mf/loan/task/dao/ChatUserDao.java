@@ -11,4 +11,5 @@ public interface ChatUserDao extends GenericDao<ChatUser>
 
     List<ChatUser> getAllByName(String name);
     List<ChatUser> getAllByUserName(String username);
+    List<ChatUser> listAllByDesc();
 }
